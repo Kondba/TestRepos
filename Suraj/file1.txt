@@ -1,0 +1,17 @@
+@PreAuthorize("hasPermission(#request, 'CREATE_ROLE')")
+	@Loggabled(actionName = AuditDescription.CREATE_ROLE)
+	@PostMapping(path = "/createrole")
+	public ResponseEntity<DataResponse<String>> createRole(@RequestBody RoleDTO roleDTO, HttpServletRequest request) {
+		DataResponse<String> response = new DataResponse<>();
+		try {
+			UUID userUuid = sessionService.getAuthenticatedUser(request, response);
+			if (userUuid == null) {
+				return response.asResponseEntity();
+			}
+			response = adminService.createRole(roleDTO);
+		} catch (Exception e) {
+			LOGGER.error("Error while creating role {} in system", roleDTO.getRoleName(), e);
+			throw new VizException(HttpStatus.INTERNAL_SERVER_ERROR.toString());
+		}
+		return response.asResponseEntity();
+	}
