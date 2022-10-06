@@ -1,0 +1,8 @@
+Java is easy but when you are do hard working on it.
+
+
+Collection
+Array
+Exception
+Polymorphism
+Incapsulation
